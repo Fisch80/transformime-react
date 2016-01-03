@@ -10,9 +10,16 @@ export default class HTMLDisplay extends React.Component {
   render() {
     return (
       <div
-        dangerouslySetInnerHTML={{ // eslint-disable-line
-          __html: this.props.data,
-        }}/>
+        ref={(d) => {
+          if(document.createRange) {
+            const range = document.createRange();
+            d.replaceChild(range.createContextualFragment(this.props.data));
+          }
+          else {
+            d.innerHTML = this.props.data;
+          }
+        }}
+      />
     );
   }
 }
